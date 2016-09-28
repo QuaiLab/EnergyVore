@@ -4,10 +4,10 @@ Robotic oriented Arduino ESP8266 library and examples to control game robots and
 
 ## typical use case
 
-1 Both the robot and remote control connect to the wifi server. 
-2 They send their identifier (set with jumpers) to the server. 
-3 In response, the server accepts the devices into the network. 
-4 Now the devices are able to send and receive data. 
+1. Both the robot and remote control connect to the wifi server. 
+2. They send their identifier (set with jumpers) to the server. 
+3. In response, the server accepts the devices into the network. 
+4. Now the devices are able to send and receive data. 
 
 * The remote control sends its joystick position and if it is clicked or not. The server forwards this information to the corresponding robot
 * the robot sends a message to the server if it found an LED on the game board 
