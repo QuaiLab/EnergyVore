@@ -1,0 +1,28 @@
+*{
+  box-sizing: border-box;
+}
+html{
+    padding:20px;
+}
+body{
+  background-color : #000;
+  color:#fff;
+  font-size: 30px;
+  text-align: center;
+}
+
+#score-1{
+  position: absolute;
+  bottom:20px;
+  font-size: 40px;
+  left: 20px;
+  font-size: 40px;
+}
+
+#score-2{
+  position: absolute;
+  bottom:20px;
+  font-size: 40px;
+  right:20px;
+  font-size: 40px;
+}
