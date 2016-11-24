@@ -15,7 +15,7 @@ class EnergyVore
 {
     public:
         EnergyVore(  
-            const uint8_t idSel0, /* idSel* input pin, must be left floating (disabled) or tied to ground (enabled) */
+            const uint8_t idSel0, 
             const uint8_t idSel1
         );
         
@@ -55,21 +55,8 @@ class Motors
         );
         
         void setup();
-        void Stop();
-        /**
-         * @param degree angle from 0 up to 360°
-         * @param speed speed between 0.0 and 1.0
-         * */
         void move(uint16_t degree, float speed);
-        /**
-         * @pram dir the direction and velocity betwwen -1.0 and 1.0: -1.0 is
-         * the mst left and 1.0 is the most right
-         * */
         void rotate(float dir);
-        void WriteMs(uint16_t left, uint16_t right);
-        void ReadMs(uint16_t* left, uint16_t* right);
-        void Save();
-        void Restore();
         
     private:
         struct Motor
@@ -84,68 +71,5 @@ class Motors
         void Set(float left, float right);
 };
 
-class Phototransistor
-{
-    public:
-        Phototransistor(
-            uint8_t photoTransistorPin /* Photo transistor input pin, must be left floating (disabled) or tied to ground (enabled) */
-        );
-        
-        void setup();
-        void loop();
-        
-        bool isOn();
-        
-    private:
-        uint8_t _photoTransistorPin;
-};
-
-class RGB
-{
-    public:
-        RGB(
-            uint8_t RgbPin,/* RGB LEDs output pin */
-            uint8_t RgbNb /* number of RGB LEDs */
-        );
-        
-        void setup();
-        /* Set RGB color */
-        void setRgbColor(uint8_t r, uint8_t g, uint8_t b);
-        
-    private :
-        Adafruit_NeoPixel _rgb;
-        uint8_t _rgbNb;
-};
-
-class Joysticks
-{
-    public:
-        
-        Joysticks(
-            uint8_t angle_part_count,
-            int16_t polarMin,
-            int16_t polarMax,
-            int16_t leftRightMin,
-            int16_t leftRightMax,
-            uint8_t multiplexerAPin,
-            uint8_t multiplexerBPin,
-            uint8_t multiplexerCPin
-        );
-
-        void setup();
-        int16_t GetLeftRight();
-        void GetPolar(uint8_t& angle, uint8_t& strenght);
-        bool IsPressed();
-
-    private:
-        uint16_t _max_angle;
-        int16_t _polarMin; 
-        int16_t _polarMax;
-        int16_t _leftRightMin; 
-        int16_t _leftRightMax;
-        uint8_t _multiplexerAPin;
-        uint8_t _multiplexerBPin;
-        uint8_t _multiplexerCPin;
-};
 
 #endif /* ENERGYVORE_H */

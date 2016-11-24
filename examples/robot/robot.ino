@@ -19,28 +19,17 @@ Motors motors(
     12 /* Motor right pin */
 );
 
-RGB LED(14, 1);
-
-Phototransistor pt(16); /* unused pin left at High-Z, analog is used */
-
 uint32_t _lastPeriodicTime;
 uint32_t _periodicPeriod = 100;
-const uint8_t ptPeriods = 2;
-const uint8_t discoverPeriods = 2;
+const uint8_t discoverPeriods = 2; /* run every 2*100ms */
 
 void setup() 
 {
-    Serial.begin(57600);
     EV.setup();
     delay(50);
     EV.connect("energyvore", "energyvore", IPAddress(192, 168, 12, 1), 4242);
-    LED.setup();
-    pt.setup();
-    LED.setRgbColor(50, 50, 50);
     motors.setup();
-//     /* Red LED means not connected to server */
     _lastPeriodicTime = millis();
-//     motors.Restore();
 }
 
 void loop() 
@@ -52,24 +41,13 @@ void loop()
     {
         _lastPeriodicTime = now;
         Periodic();
-//         loopLed();
     }
 }
 
 void Periodic()
 {
-    static uint8_t ptDiviser;
     static uint8_t discoverDiviser;
-    if(_associated)
-    {
-        ptDiviser++;
-        if(ptDiviser >= ptPeriods)
-        {
-            ptDiviser = 0;
-            pt.loop();
-        }
-    }
-    else
+    if(!_associated)
     {
         discoverDiviser++;
         if(discoverDiviser >= discoverPeriods)
@@ -78,11 +56,6 @@ void Periodic()
             EV.SendToServer('Z', EV.ReadId() + '0');
         }
     }
-}
-
-void OnPhotoTransistorActivated()
-{
-    EV.SendToServer('D', '1');
 }
 
 void OnServerCommand(uint8_t code)
@@ -108,19 +81,9 @@ void OnServerCommand(uint8_t code)
             }
             break;
         case parameter_state :
-            switch(code)
+            if(code == 'V')
             {
-                case 'V':
-                    _associated = true;
-                    break;
-                case 'D':
-//                     LED.setRgbColor(0, 100, 0);
-                    break;
-                case 'O':
-//                     LED.setRgbColor(0, 0, 0);
-                    break;
-                default:
-                    break;
+                _associated = true;
             }
             state = command;
             break;
@@ -145,11 +108,3 @@ void OnServerCommand(uint8_t code)
             break;
     }
 }
-
-// void loopLed()
-// {
-//     static uint8_t bright = 0;
-//     LED.setRgbColor(bright, bright, bright);
-//     bright+= 5;
-// }
-
